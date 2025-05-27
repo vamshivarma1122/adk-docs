@@ -476,6 +476,9 @@ from google.adk.tools.mcp_tool.mcp_toolset import MCPToolset, SseServerParams, S
 # Place this near the top, before using env vars like API keys
 load_dotenv('../.env')
 
+# Ensure TARGET_FOLDER_PATH is an absolute path for the MCP server.
+TARGET_FOLDER_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), "/path/to/your/folder")
+
 # --- Step 1: Agent Definition ---
 async def get_agent_async():
   """Creates an ADK Agent equipped with tools from the MCP Server."""
@@ -485,7 +488,7 @@ async def get_agent_async():
           command='npx', # Command to run the server
           args=["-y",    # Arguments for the command
                 "@modelcontextprotocol/server-filesystem",
-                PATH_TO_YOUR_MCP_SERVER_SCRIPT],
+                TARGET_FOLDER_PATH],
       ),
       tool_filter=['read_file', 'list_directory'] # Optional: filter specific tools
       # For remote servers, you would use SseServerParams instead:
