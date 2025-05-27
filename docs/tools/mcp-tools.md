@@ -479,26 +479,27 @@ load_dotenv('../.env')
 # --- Step 1: Agent Definition ---
 async def get_agent_async():
   """Creates an ADK Agent equipped with tools from the MCP Server."""
-  tools, exit_stack = await MCPToolset.from_server(
+  toolset = MCPToolset(
       # Use StdioServerParameters for local process communication
       connection_params=StdioServerParameters(
           command='npx', # Command to run the server
           args=["-y",    # Arguments for the command
                 "@modelcontextprotocol/server-filesystem",
-                # TODO: IMPORTANT! Change the path below to an ABSOLUTE path on your system.
-                "/path/to/your/folder"],
-      )
+                PATH_TO_YOUR_MCP_SERVER_SCRIPT],
+      ),
+      tool_filter=['read_file', 'list_directory'] # Optional: filter specific tools
       # For remote servers, you would use SseServerParams instead:
       # connection_params=SseServerParams(url="http://remote-server:port/path", headers={...})
   )
-  print(f"Fetched {len(tools)} tools from MCP server.")
+
+  # Use in an agent
   root_agent = LlmAgent(
       model='gemini-2.0-flash', # Adjust model name if needed based on availability
-      name='filesystem_assistant',
-      instruction='Help user interact with the local filesystem using available tools.',
-      tools=tools, # Provide the MCP tools to the ADK agent
+      name='enterprise_assistant',
+      instruction='Help user accessing their file systems',
+      tools=[toolset], # Provide the MCP tools to the ADK agent
   )
-  return root_agent, exit_stack
+  return root_agent, toolset
 
 # --- Step 2: Main Execution Logic ---
 async def async_main():
@@ -516,7 +517,7 @@ async def async_main():
   print(f"User Query: '{query}'")
   content = types.Content(role='user', parts=[types.Part(text=query)])
 
-  root_agent, exit_stack = await get_agent_async()
+  root_agent, toolset = await get_agent_async()
 
   runner = Runner(
       app_name='mcp_filesystem_app',
@@ -533,9 +534,10 @@ async def async_main():
   async for event in events_async:
     print(f"Event received: {event}")
 
-  # Crucial Cleanup: Ensure the MCP server process connection is closed.
+  # Cleanup is handled automatically by the agent framework
+  # But you can also manually close if needed:
   print("Closing MCP server connection...")
-  await exit_stack.aclose()
+  await toolset.close()
   print("Cleanup complete.")
 
 if __name__ == '__main__':
