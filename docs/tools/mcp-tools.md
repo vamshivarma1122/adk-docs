@@ -463,6 +463,7 @@ The following example is modified from the "Example 1: File System MCP Server" e
 ```python
 # agent.py (modify get_tools_async and other parts as needed)
 # ./adk_agent_samples/mcp_agent/agent.py
+import os
 import asyncio
 from dotenv import load_dotenv
 from google.genai import types
