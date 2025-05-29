@@ -489,6 +489,7 @@ async def get_agent_async():
           command='npx', # Command to run the server
           args=["-y",    # Arguments for the command
                 "@modelcontextprotocol/server-filesystem",
+                # # TODO: IMPORTANT! Change the path below to an ABSOLUTE path on your system.
                 TARGET_FOLDER_PATH],
       ),
       tool_filter=['read_file', 'list_directory'] # Optional: filter specific tools
@@ -549,6 +550,9 @@ if __name__ == '__main__':
     asyncio.run(async_main())
   except Exception as e:
     print(f"An error occurred: {e}")
+
+# # In Google Colab
+# await async_main()
 ```
 
 
