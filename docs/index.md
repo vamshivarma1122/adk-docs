@@ -3,6 +3,14 @@ hide:
   - toc
 ---
 
+!!! tip "Google I/O'25 - ADK updates"
+
+    Big news! 
+
+    - Introducing **[Java ADK v0.1.0](https://github.com/google/adk-java/)**, extending agent capabilities to the Java ecosystem.
+
+    - **[Python ADK](https://github.com/google/adk-python/)** is officially v1.0.0 offering stability for production-ready agents.
+
 <div style="text-align: center;">
   <div class="centered-logo-text-group">
     <img src="assets/agent-development-kit.png" alt="Agent Development Kit Logo" width="100">
@@ -10,39 +18,57 @@ hide:
   </div>
 </div>
 
-<p style="text-align:center; font-size: 1.2em;">
-  <b>An open-source AI agent framework integrated with Gemini and Google</b><br/>
-</p>
-
 ## What is Agent Development Kit?
 
 Agent Development Kit (ADK) is a flexible and modular framework for **developing
-and deploying AI agents**. ADK can be used with popular LLMs and open-source
-generative AI tools and is designed with a focus on **tight integration with the
-Google ecosystem and Gemini models**. ADK makes it **easy to get started with
-simple agents** powered by Gemini models and Google AI tools while providing the
-control and structure needed for **more complex agent architectures and
-orchestration**.
+and deploying AI agents**. While optimized for Gemini and the Google ecosystem,
+ADK is **model-agnostic**, **deployment-agnostic**, and is built for
+**compatibility with other frameworks**. ADK was designed to make agent
+development feel more like software development, to make it easier for
+developers to create, deploy, and orchestrate agentic architectures that range
+from simple tasks to complex workflows.
 
-<div class="install-command-container">
-  <p style="text-align:center;">
-    Get started:
-    <br/>
+<div id="centered-install-tabs" class="install-command-container" markdown="1">
+
+<p class="get-started-text" style="text-align: center;">Get started:</p>
+
+=== "Python"
+    <br>
+    <p style="text-align: center;">
     <code>pip install google-adk</code>
-  </p>
+    </p>
+
+=== "Java"
+
+    ```xml title="pom.xml"
+    <dependency>
+        <groupId>com.google.adk</groupId>
+        <artifactId>google-adk</artifactId>
+        <version>0.1.0</version>
+    </dependency>
+    ```
+
+    ```gradle title="build.gradle"
+    dependencies {
+        implementation 'com.google.adk:google-adk:0.1.0'
+    }
+    ```
 </div>
 
+
 <p style="text-align:center;">
-  <a href="get-started/quickstart/" class="md-button">Quickstart</a>
-  <a href="get-started/tutorial/" class="md-button">Tutorial</a>
-  <a href="http://github.com/google/adk-samples" class="md-button" target="_blank">Sample Agents</a>
-  <a href="api-reference/" class="md-button">API Reference</a>
-  <a href="contributing-guide/" class="md-button">Contribute ❤️</a>
+  <a href="get-started/quickstart/" class="md-button" style="margin:3px">Quickstart</a>
+  <a href="tutorials/" class="md-button" style="margin:3px">Tutorials</a>
+  <a href="http://github.com/google/adk-samples" class="md-button" target="_blank" style="margin:3px">Sample Agents</a>
+  <a href="api-reference/" class="md-button" style="margin:3px">API Reference</a>
+  <a href="contributing-guide/" class="md-button" style="margin:3px">Contribute ❤️</a>
 </p>
 
 ---
 
 ## Learn more
+
+[:fontawesome-brands-youtube:{.youtube-red-icon} Watch "Introducing Agent Development Kit"!](https://www.youtube.com/watch?v=zgrOwow_uTQ target="_blank" rel="noopener noreferrer")
 
 <div class="grid cards" markdown>
 
@@ -95,24 +121,13 @@ orchestration**.
 
     [**Evaluate agents**](evaluate/index.md)
 
--   :material-console-line: **Building Responsible Agents**
+-   :material-console-line: **Building Safe and Secure Agents**
 
     ---
 
     Learn how to building powerful and trustworthy agents by implementing
-    responsible AI patterns and best practices into your agent's design.
+    security and safety patterns and best practices into your agent's design.
 
-    [**Responsible agents**](guides/responsible-agents.md)
+    [**Safety and Security**](safety/index.md)
 
 </div>
-
-!!! Preview
-
-    This feature is subject to the "Pre-GA Offerings Terms" in the General
-    Service Terms section of the
-    [Service Specific Terms](https://cloud.google.com/terms/service-terms#1).
-    Pre-GA features are available "as is" and might have limited support. For
-    more information, see the
-    [launch stage descriptions](https://cloud.google.com/products#product-launch-stages).
-
-<div class="footer"></div>

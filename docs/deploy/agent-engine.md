@@ -1,5 +1,7 @@
 # Deploy to Vertex AI Agent Engine
 
+![python_only](https://img.shields.io/badge/Currently_supported_in-Python-blue){ title="Vertex AI Agent Engine currently supports only Python."}
+
 [Agent Engine](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/overview)
 is a fully managed Google Cloud service enabling developers to deploy, manage,
 and scale AI agents in production. Agent Engine handles the infrastructure to
@@ -143,15 +145,19 @@ remote_app = agent_engines.create(
 )
 ```
 
-This step may take several minutes to finish.
+This step may take several minutes to finish. Each deployed agent has a unique identifier. You can run the following command to get the resource_name identifier for your deployed agent:
 
-## Grant the deployed agent permissions
+```python
+remote_app.resource_name
+```
 
-Before proceeding to query your agent on Agent Engine, your deployed agent must first be granted additional permissions before it can use managed sessions. Managed sessions are a built-in component of Agent Engine that enables agents to keep track of the state of a conversation. Without granting the deploy agent the permissions below, you may see errors when querying your deployed agent.
+The response should look like the following string:
 
-You can follow the instructions in [Set up your service agent permissions](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/set-up#service-agent) to grant the following permissions via the [IAM admin page](https://console.cloud.google.com/iam-admin/iam):
+```
+f"projects/{PROJECT_NUMBER}/locations/{LOCATION}/reasoningEngines/{RESOURCE_ID}"
+```
 
-*  Vertex AI User (`roles/aiplatform.user`) to your `service-PROJECT_NUMBER@gcp-sa-aiplatform-re.iam.gserviceaccount.com` service account
+For additional details, you can visit the Agent Engine documentation [deploying an agent](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/deploy) and [managing deployed agents](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/manage/overview).
 
 ### Try your agent on Agent Engine
 
@@ -213,7 +219,7 @@ Expected output for `stream_query` (remote):
 
 ## Clean up
 
-After you've finished, it's a good practice to clean up your cloud resources.
+After you have finished, it is a good practice to clean up your cloud resources.
 You can delete the deployed Agent Engine instance to avoid any unexpected
 charges on your Google Cloud account.
 
