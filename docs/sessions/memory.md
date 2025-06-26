@@ -32,7 +32,13 @@ ADK provides different ways to implement this long-term knowledge store:
     memory_service = InMemoryMemoryService()
     ```
 
-2. **`VertexAiRagMemoryService`**  
+2.  **`VertexAiMemoryBankService`**
+
+    [Vertex AI Agent Engine Memory Bank](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/memory-bank/overview) is a fully managed service for storing memories.
+     
+    For more information, see the [Quickstart with ADK](https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/memory-bank/quickstart-adk).
+
+3.  **`VertexAiRagMemoryService`**  
 
     * **How it works:** Leverages Google Cloud's Vertex AI RAG (Retrieval-Augmented Generation) service. It ingests session data into a specified RAG Corpus and uses powerful semantic search capabilities for retrieval.  
     * **Persistence:** Yes. The knowledge is stored persistently within the configured Vertex AI RAG Corpus.  
