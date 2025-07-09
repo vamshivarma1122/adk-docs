@@ -1,4 +1,4 @@
-# Agent Development Kit (ADK) Documentation
+# Agent Development Kit (ADK)
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](LICENSE)
 [![Docs Health](docs-health-badge.svg)](docs_health_report.md)
