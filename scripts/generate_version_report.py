@@ -2,11 +2,14 @@ import os
 import re
 from collections import defaultdict
 
-def generate_version_report(directory):
+DOCS_DIRECTORY = "docs"
+REPORT_FILENAME = "docs_health_report.md"
+
+def generate_version_report():
     version_map = defaultdict(list)
     files_without_version = []
 
-    for root, _, files in os.walk(directory):
+    for root, _, files in os.walk(DOCS_DIRECTORY):
         for file in files:
             if file.endswith(".md"):
                 filepath = os.path.join(root, file)
@@ -46,7 +49,7 @@ def generate_version_report(directory):
     report_content += "<!-- END_VERSION_REPORT -->"
 
     # --- Read the existing report and replace the version section ---
-    report_path = "docs_health_report.md"
+    report_path = os.path.join(DOCS_DIRECTORY, REPORT_FILENAME)
     try:
         with open(report_path, "r") as f:
             existing_content = f.read()
@@ -69,4 +72,4 @@ def generate_version_report(directory):
     print(f"\nSuccessfully updated version report in {report_path}")
 
 if __name__ == "__main__":
-    generate_version_report("docs/")
+    generate_version_report()
