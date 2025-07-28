@@ -122,7 +122,8 @@ def check_docs_health():
     with open(report_path, "w") as f:
         f.write(new_full_content)
 
-    # Set outputs for GitHub Actions
+    # (Not used currently) Set outputs for GitHub Actions
+    # To be used if SVG badge is to be displayed in README.
     if 'GITHUB_OUTPUT' in os.environ:
         with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             f.write(f"recent_percentage={recent_percentage:.1f}\n")

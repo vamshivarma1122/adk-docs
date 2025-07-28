@@ -24,27 +24,13 @@ jobs:
 
       - name: Run health check script
         id: health_check
-        run: python adk-docs/scripts/check_docs_health.py
-
-      - name: Generate status badge
-        run: |
-          PERCENTAGE="${{ steps.health_check.outputs.recent_percentage }}%"
-          LABEL="Docs"
-          if [ "${{ steps.health_check.outputs.exit_code }}" -eq 0 ]; then
-            STATUS_MESSAGE="Healthy ($PERCENTAGE)"
-            COLOR="34A853" # Google Green
-          else
-            STATUS_MESSAGE="Needs Review ($PERCENTAGE)"
-            COLOR="F4B400" # Google Yellow
-          fi
-          # Replace spaces with underscores for shields.io URL compatibility
-          MESSAGE_URL_FRIENDLY=$(echo "$STATUS_MESSAGE" | sed 's/ /_/g')
-          curl "https://img.shields.io/badge/$LABEL-$MESSAGE_URL_FRIENDLY-$COLOR" > adk-docs/docs-health-badge.svg
+        continue-on-error: true
+        run: python scripts/check_docs_health.py
 
       - name: Check for changes
         id: git_status
         run: |
-          if git diff --quiet -- adk-docs/docs_health_report.md adk-docs/docs-health-badge.svg; then
+          if git diff --quiet -- docs_health_report.md; then
             echo "No changes to report."
             echo "changed=false" >> $GITHUB_OUTPUT
           else
@@ -61,11 +47,11 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           BRANCH_NAME="docs-health/update-${{ github.run_id }}"
           git checkout -b $BRANCH_NAME
-          git add adk-docs/docs_health_report.md adk-docs/docs-health-badge.svg
-          git commit -m "docs: Update health report and badge"
+          git add docs_health_report.md
+          git commit -m "docs: Update health report"
           git push origin $BRANCH_NAME
           gh pr create \
             --base "main" \
             --head "$BRANCH_NAME" \
-            --title "Docs Health Report Update (${{ github.run_id }})" \
+            --title "docs: Update health report (${{ github.run_id }})" \
             --body "Automated documentation health report update. Please review and merge."

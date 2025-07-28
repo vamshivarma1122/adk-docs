@@ -26,12 +26,12 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: Generate version report
-        run: python adk-docs/scripts/generate_version_report.py
+        run: python scripts/generate_version_report.py
 
       - name: Check for changes
         id: git_status
         run: |
-          if git diff --quiet -- adk-docs/docs_health_report.md; then
+          if git diff --quiet -- docs_health_report.md; then
             echo "No changes to report."
             echo "changed=false" >> $GITHUB_OUTPUT
           else
@@ -48,7 +48,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           BRANCH_NAME="docs/version-report-update-${{ github.run_id }}"
           git checkout -b $BRANCH_NAME
-          git add adk-docs/docs_health_report.md
+          git add docs_health_report.md
           git commit -m "docs: Update version report"
           git push origin $BRANCH_NAME
           gh pr create \
