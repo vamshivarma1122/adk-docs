@@ -22,6 +22,8 @@ STALENESS_THRESHOLD_DAYS = 90
 RECENT_UPDATE_THRESHOLD_WEEKS = 4
 DOCS_DIRECTORY = "docs"
 REPORT_FILENAME = "docs_health_report.md"
+HEALTH_REPORT_START_MARKER = "<!-- BEGIN_DOCS_HEALTH_REPORT -->"
+HEALTH_REPORT_END_MARKER = "<!-- END_DOCS_HEALTH_REPORT -->"
 
 def get_last_commit_date(file_path):
     """Gets the last commit date of a file."""
@@ -43,7 +45,7 @@ def check_docs_health():
     staleness_threshold = now - timedelta(days=STALENESS_THRESHOLD_DAYS)
     recent_update_threshold = now - timedelta(weeks=RECENT_UPDATE_THRESHOLD_WEEKS)
 
-    # Change to the adk-docs directory to ensure git commands work correctly
+    # Change to the adk-docs directory
     original_cwd = os.getcwd()
     script_dir = os.path.dirname(os.path.abspath(__file__))
     adk_docs_root = os.path.abspath(os.path.join(script_dir, ".."))
@@ -81,28 +83,30 @@ def check_docs_health():
     exit_code = 0 if total_stale_files == 0 else 1
 
     # --- Generate the new report content ---
-    report_content = "<!-- BEGIN_DOCS_HEALTH_REPORT -->\n"
-    report_content += "# Documentation Health Report\n\n"
-    report_content += (f"**Summary:** **{recent_percentage:.1f}%** of documentation pages were updated in the last "
+    report_parts = [f"{HEALTH_REPORT_START_MARKER}\n"]
+    report_parts.append("# Documentation Health Report\n\n")
+    report_parts.append(f"**Summary:** **{recent_percentage:.1f}%** of documentation pages were updated in the last "
                        f"{RECENT_UPDATE_THRESHOLD_WEEKS} weeks. ")
-    report_content += (f"A total of **{total_stale_files}** page(s) are considered stale (older than {STALENESS_THRESHOLD_DAYS} days).\n\n")
+    report_parts.append(f"A total of **{total_stale_files}** page(s) are considered stale (older than {STALENESS_THRESHOLD_DAYS} days).\n\n")
 
     if total_stale_files == 0:
-        report_content += "**All documentation is up-to-date!**\n"
+        report_parts.append("**All documentation is up-to-date!**\n")
     else:
-        report_content += "## Detailed Health by Section\n\n"
+        report_parts.append("## Detailed Health by Section\n\n")
         for section, stats in sorted(section_stats.items()):
             stale_count = len(stats["stale_files"])
             if stale_count == 0:
-                report_content += f"### {section} - ✅ Healthy\n"
-                report_content += f"All {stats['total_files']} page(s) in this section are up-to-date.\n\n"
+                report_parts.append(f"### {section} - ✅ Healthy\n")
+                report_parts.append(f"All {stats['total_files']} page(s) in this section are up-to-date.\n\n")
             else:
-                report_content += f"### {section} - ⚠️ Needs Review\n"
-                report_content += f"{stale_count} of {stats['total_files']} page(s) in this section are stale:\n\n"
+                report_parts.append(f"### {section} - ⚠️ Needs Review\n")
+                report_parts.append(f"{stale_count} of {stats['total_files']} page(s) in this section are stale:\n\n")
                 for file_path, days_since_update in stats["stale_files"]:
-                    report_content += f"- **{file_path}**: Last updated {days_since_update.days} days ago\n"
-                report_content += "\n"
-    report_content += "<!-- END_DOCS_HEALTH_REPORT -->"
+                    report_parts.append(f"- **{file_path}**: Last updated {days_since_update.days} days ago\n")
+                report_parts.append("\n")
+    report_parts.append(HEALTH_REPORT_END_MARKER)
+
+    report_content = "".join(report_parts)
 
     # --- Read the existing report and replace the health section ---
     report_path = os.path.join(adk_docs_root, REPORT_FILENAME)
@@ -112,7 +116,7 @@ def check_docs_health():
     except FileNotFoundError:
         existing_content = ""
 
-    pattern = re.compile(r"<!-- BEGIN_DOCS_HEALTH_REPORT -->.*<!-- END_DOCS_HEALTH_REPORT -->", re.DOTALL)
+    pattern = re.compile(f"{HEALTH_REPORT_START_MARKER}.*{HEALTH_REPORT_END_MARKER}", re.DOTALL)
     
     if pattern.search(existing_content):
         new_full_content = pattern.sub(report_content, existing_content)

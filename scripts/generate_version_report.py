@@ -18,6 +18,8 @@ from collections import defaultdict
 
 DOCS_DIRECTORY = "docs"
 REPORT_FILENAME = "docs_health_report.md"
+VERSION_REPORT_START_MARKER = "<!-- BEGIN_VERSION_REPORT -->"
+VERSION_REPORT_END_MARKER = "<!-- END_VERSION_REPORT -->"
 
 def generate_version_report():
     version_map = defaultdict(list)
@@ -41,26 +43,28 @@ def generate_version_report():
                         files_without_version.append(filepath)
 
     # --- Generate the new report content ---
-    report_content = "<!-- BEGIN_VERSION_REPORT -->\n"
-    report_content += "# Documentation Version Report\n\n"
-    report_content += "This report provides a summary of the versions of the documentation pages.\n\n"
+    report_parts = [f"{VERSION_REPORT_START_MARKER}\n"]
+    report_parts.append("# Documentation Version Report\n\n")
+    report_parts.append("This report provides a summary of the versions of the documentation pages.\n\n")
 
     for version, files in sorted(version_map.items()):
-        report_content += f"## Version {version}\n\n"
-        report_content += f"Found {len(files)} pages with this version:\n\n"
+        report_parts.append(f"## Version {version}\n\n")
+        report_parts.append(f"Found {len(files)} pages with this version:\n\n")
         for file in files:
             link = os.path.relpath(file, "docs").replace(".md", ".html")
-            report_content += f"- [{file}]({link})\n"
-        report_content += "\n"
+            report_parts.append(f"- [{file}]({link})\n")
+        report_parts.append("\n")
 
     if files_without_version:
-        report_content += "## Pages without Version Information\n\n"
-        report_content += f"Found {len(files_without_version)} pages without version metadata:\n\n"
-        for file in files_without_version:
+        report_parts.append("## Pages without Version Information\n\n")
+        report_parts.append(f"Found {len(files_without_version)} pages without version metadata:\n\n")
+        for file in files:
             link = os.path.relpath(file, "docs").replace(".md", ".html")
-            report_content += f"- [{file}]({link})\n"
-        report_content += "\n"
-    report_content += "<!-- END_VERSION_REPORT -->"
+            report_parts.append(f"- [{file}]({link})\n")
+        report_parts.append("\n")
+    report_parts.append(VERSION_REPORT_END_MARKER)
+    
+    report_content = "".join(report_parts)
 
     # --- Read the existing report and replace the version section ---
     report_path = os.path.join(DOCS_DIRECTORY, REPORT_FILENAME)
@@ -72,7 +76,7 @@ def generate_version_report():
 
     # Use a regex to replace the content between the markers, or append if not found
     # The re.DOTALL flag allows "." to match newlines
-    pattern = re.compile(r"<!-- BEGIN_VERSION_REPORT -->.*<!-- END_VERSION_REPORT -->", re.DOTALL)
+    pattern = re.compile(f"{VERSION_REPORT_START_MARKER}.*{VERSION_REPORT_END_MARKER}", re.DOTALL)
     
     if pattern.search(existing_content):
         new_full_content = pattern.sub(report_content, existing_content)
