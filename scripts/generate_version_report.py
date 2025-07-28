@@ -87,7 +87,7 @@ def generate_version_report():
     with open(report_path, "w") as f:
         f.write(new_full_content)
 
-    print(f"\nSuccessfully updated version report in {report_path}")
+    print(f"\nVersion report analysis done.")
 
 if __name__ == "__main__":
     generate_version_report()

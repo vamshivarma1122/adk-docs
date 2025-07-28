@@ -126,6 +126,7 @@ def check_docs_health():
     with open(report_path, "w") as f:
         f.write(new_full_content)
 
+    print("Docs Health Analysis done.")
     # (Not used currently) Set outputs for GitHub Actions
     # To be used if SVG badge is to be displayed in README.
     if 'GITHUB_OUTPUT' in os.environ:
