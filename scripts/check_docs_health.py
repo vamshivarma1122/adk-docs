@@ -1,4 +1,5 @@
 import os
+import re
 import subprocess
 from datetime import datetime, timedelta
 
@@ -11,7 +12,6 @@ REPORT_FILENAME = "docs_health_report.md"
 def get_last_commit_date(file_path):
     """Gets the last commit date of a file."""
     try:
-        # Use --format=%ci for committer date, ISO 8601 format
         commit_date_str = subprocess.check_output(
             ["git", "log", "-1", "--format=%ci", file_path]
         ).decode("utf-8").strip()
@@ -66,30 +66,47 @@ def check_docs_health():
     recent_percentage = (recently_updated_count / total_docs_count * 100) if total_docs_count > 0 else 0
     exit_code = 0 if total_stale_files == 0 else 1
 
-    report_path = os.path.join(adk_docs_root, REPORT_FILENAME)
-    with open(report_path, "w") as f:
-        f.write("# Documentation Health Report\n\n")
-        f.write(f"**Summary:** **{recent_percentage:.1f}%** of documentation pages were updated in the last "
-                f"{RECENT_UPDATE_THRESHOLD_WEEKS} weeks. ")
-        f.write(f"A total of **{total_stale_files}** page(s) are considered stale (older than {STALENESS_THRESHOLD_DAYS} days).\n\n")
+    # --- Generate the new report content ---
+    report_content = "<!-- BEGIN_DOCS_HEALTH_REPORT -->\n"
+    report_content += "# Documentation Health Report\n\n"
+    report_content += (f"**Summary:** **{recent_percentage:.1f}%** of documentation pages were updated in the last "
+                       f"{RECENT_UPDATE_THRESHOLD_WEEKS} weeks. ")
+    report_content += (f"A total of **{total_stale_files}** page(s) are considered stale (older than {STALENESS_THRESHOLD_DAYS} days).\n\n")
 
-        if total_stale_files == 0:
-            f.write("**All documentation is up-to-date!**\n")
-            print("All documentation is up-to-date.")
-        else:
-            f.write("## Detailed Health by Section\n\n")
-            for section, stats in sorted(section_stats.items()):
-                stale_count = len(stats["stale_files"])
-                if stale_count == 0:
-                    f.write(f"### {section} - ✅ Healthy\n")
-                    f.write(f"All {stats['total_files']} page(s) in this section are up-to-date.\n\n")
-                else:
-                    f.write(f"### {section} - ⚠️ Needs Review\n")
-                    f.write(f"{stale_count} of {stats['total_files']} page(s) in this section are stale:\n\n")
-                    for file_path, days_since_update in stats["stale_files"]:
-                        f.write(f"- **{file_path}**: Last updated {days_since_update.days} days ago\n")
-                    f.write("\n")
-            print(f"Found {total_stale_files} stale files.")
+    if total_stale_files == 0:
+        report_content += "**All documentation is up-to-date!**\n"
+    else:
+        report_content += "## Detailed Health by Section\n\n"
+        for section, stats in sorted(section_stats.items()):
+            stale_count = len(stats["stale_files"])
+            if stale_count == 0:
+                report_content += f"### {section} - ✅ Healthy\n"
+                report_content += f"All {stats['total_files']} page(s) in this section are up-to-date.\n\n"
+            else:
+                report_content += f"### {section} - ⚠️ Needs Review\n"
+                report_content += f"{stale_count} of {stats['total_files']} page(s) in this section are stale:\n\n"
+                for file_path, days_since_update in stats["stale_files"]:
+                    report_content += f"- **{file_path}**: Last updated {days_since_update.days} days ago\n"
+                report_content += "\n"
+    report_content += "<!-- END_DOCS_HEALTH_REPORT -->"
+
+    # --- Read the existing report and replace the health section ---
+    report_path = os.path.join(adk_docs_root, REPORT_FILENAME)
+    try:
+        with open(report_path, "r") as f:
+            existing_content = f.read()
+    except FileNotFoundError:
+        existing_content = ""
+
+    pattern = re.compile(r"<!-- BEGIN_DOCS_HEALTH_REPORT -->.*<!-- END_DOCS_HEALTH_REPORT -->", re.DOTALL)
+    
+    if pattern.search(existing_content):
+        new_full_content = pattern.sub(report_content, existing_content)
+    else:
+        new_full_content = existing_content + "\n\n" + report_content
+
+    with open(report_path, "w") as f:
+        f.write(new_full_content)
 
     # Set outputs for GitHub Actions
     if 'GITHUB_OUTPUT' in os.environ:

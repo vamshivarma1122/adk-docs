@@ -1,3 +1,4 @@
+<!-- BEGIN_DOCS_HEALTH_REPORT -->
 # Documentation Health Report
 
 **Summary:** **85.7%** of documentation pages were updated in the last 4 weeks. A total of **3** page(s) are considered stale (older than 90 days).
@@ -23,3 +24,8 @@ All 3 page(s) in this section are up-to-date.
 
 ### tools - ✅ Healthy
 All 10 page(s) in this section are up-to-date.
+<!-- END_DOCS_HEALTH_REPORT -->
+
+
+<!-- BEGIN_VERSION_REPORT -->
+<!-- END_VERSION_REPORT -->
