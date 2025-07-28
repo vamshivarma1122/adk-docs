@@ -58,7 +58,7 @@ def generate_version_report():
     if files_without_version:
         report_parts.append("## Pages without Version Information\n\n")
         report_parts.append(f"Found {len(files_without_version)} pages without version metadata:\n\n")
-        for file in files:
+        for file in files_without_version:
             link = os.path.relpath(file, "docs").replace(".md", ".html")
             report_parts.append(f"- [{file}]({link})\n")
         report_parts.append("\n")
@@ -84,6 +84,7 @@ def generate_version_report():
         # If the markers aren't found, append the new report with a newline
         new_full_content = existing_content + "\n\n" + report_content
 
+    print(f"\nWriting version report to: {report_path}")
     with open(report_path, "w") as f:
         f.write(new_full_content)
 
