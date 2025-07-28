@@ -67,9 +67,8 @@ def generate_version_report():
     report_content = "".join(report_parts)
 
     # --- Read the existing report and replace the version section ---
-    report_path = os.path.join(DOCS_DIRECTORY, REPORT_FILENAME)
     try:
-        with open(report_path, "r") as f:
+        with open(REPORT_FILENAME, "r") as f:
             existing_content = f.read()
     except FileNotFoundError:
         existing_content = ""
@@ -84,8 +83,8 @@ def generate_version_report():
         # If the markers aren't found, append the new report with a newline
         new_full_content = existing_content + "\n\n" + report_content
 
-    print(f"\nWriting version report to: {report_path}")
-    with open(report_path, "w") as f:
+    print(f"\nWriting version report to: {REPORT_FILENAME}")
+    with open(REPORT_FILENAME, "w") as f:
         f.write(new_full_content)
 
     print(f"\nVersion report analysis done.")
