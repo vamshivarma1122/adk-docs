@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  docs-health-check:
+  health-check:
     runs-on: ubuntu-latest
     permissions:
       contents: write
