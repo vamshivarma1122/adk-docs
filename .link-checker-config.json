@@ -5,6 +5,15 @@
     },
     {
       "pattern": "^((?!http).)*$"
+    },
+    {
+      "pattern": "https://console.cloud.google.com/marketplace/product/google_patents_public_datasets/google-patents-public-data"
+    },
+    {
+      "pattern": "https://console.cloud.google.com/vertex-ai/model-garden"
+    },
+    {
+      "pattern": "https://a2aprotocol.ai/docs/guide/python-a2a-tutorial"
     }
   ],
   "aliveStatusCodes": [
