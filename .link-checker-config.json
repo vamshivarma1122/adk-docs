@@ -5,12 +5,22 @@
     },
     {
       "pattern": "^((?!http).)*$"
+    },
+    {
+      "pattern": "https://a2aprotocol.ai/docs/guide/python-a2a-tutorial"
+    },
+    {
+      "pattern":"http://app.agentops.ai"
+    }, 
+    {
+      "pattern":"https://x.com/agentopsai"
     }
   ],
   "aliveStatusCodes": [
     200,
     206,
     302,
-    403
+    403, 
+    0
   ]
 }
