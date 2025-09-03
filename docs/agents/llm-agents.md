@@ -62,6 +62,17 @@ First, you need to establish what the agent *is* and what it's *for*.
             .build();
     ```
 
+=== "Typescript"
+
+    ```typescript
+    // Example: Defining the basic identity
+    const capitalAgent = new LlmAgent({
+        model: 'gemini-2.0-flash',
+        name: 'capital_agent',
+        description: 'Answers user questions about the capital city of a given country.',
+        // instruction and tools will be added next
+    });
+    ```
 
 ## Guiding the Agent: Instructions (`instruction`)
 
@@ -130,6 +141,26 @@ tells the agent:
                 """)
             // tools will be added next
             .build();
+    ```
+
+=== "Typescript"
+
+    ```typescript
+    // Example: Adding instructions
+    const capitalAgent = new LlmAgent({
+        model: 'gemini-2.0-flash',
+        name: 'capital_agent',
+        description: 'Answers user questions about the capital city of a given country.',
+        instruction: `You are an agent that provides the capital city of a country.
+            When a user asks for the capital of a country:
+            1. Identify the country name from the user's query.
+            2. Use the \`get_capital_city\` tool to find the capital.
+            3. Respond clearly to the user, stating the capital city.
+            Example Query: "What's the capital of {country}?"
+            Example Response: "The capital of France is Paris."
+            `,
+        // tools will be added next
+    });    
     ```
 
 *(Note: For instructions that apply to *all* agents in a system, consider using
@@ -204,6 +235,48 @@ on the conversation and its instructions.
             .build();
     ```
 
+=== "Typescript"
+
+    ```typescript
+    import {z} from 'zod';
+    import { LlmAgent, FunctionTool } from '@google/adk';
+
+    // Define the schema for the tool's input parameters
+    const getCapitalCityParamsSchema = z.object({
+        country: z.string().describe('The country to get capital for.'),
+    });
+
+    // Define the tool function itself
+    function getCapitalCity(params: z.infer<typeof getCapitalCityParamsSchema>) {
+    // Replace with actual logic (e.g., API call, database lookup)
+    const capitals: Record<string, string> = {
+        'france': 'Paris',
+        'japan': 'Tokyo',
+        'canada': 'Ottawa',
+    };
+    const result = capitals[params.country.toLowerCase()] ??
+        `Sorry, I don't know the capital of ${params.country}.`;
+    return {result}; // Tools must return an object
+    }
+
+    // Create an instance of the FunctionTool
+    const getCapitalCityTool = new FunctionTool({
+        name: 'get_capital_city',
+        description: 'Retrieves the capital city for a given country.',
+        parameters: getCapitalCityParamsSchema,
+        execute: getCapitalCity,
+    });
+
+    // Add the tool to the agent
+    const capitalAgent = new LlmAgent({
+        model: 'gemini-2.0-flash',
+        name: 'capital_agent',
+        description: 'Answers user questions about the capital city of a given country.',
+        instruction: 'You are an agent that provides the capital city of a country...', // Note: the full instruction is omitted for brevity
+        tools: [getCapitalCityTool], // Provide the FunctionTool instance in an array
+    });
+    ```
+
 Learn more about Tools in the [Tools](../tools/index.md) section.
 
 ## Advanced Configuration & Control
@@ -243,6 +316,20 @@ You can adjust how the underlying LLM generates responses using `generate_conten
                 .maxOutputTokens(250)
                 .build())
             .build();
+    ```
+
+=== "Typescript"
+
+    ```typescript
+    import {GenerateContentConfig} from '@google/genai';
+
+    const agent = new LlmAgent({
+        // ... other params
+        generateContentConfig: {
+            temperature: 0.2, // More deterministic output
+            maxOutputTokens: 250,
+        },
+    });   
     ```
 
 ### Structuring Data (`input_schema`, `output_schema`, `output_key`)
@@ -305,6 +392,26 @@ For scenarios requiring structured data exchange with an `LLM Agent`, the ADK pr
             .build();
     ```
 
+=== "Typescript"
+
+    ```typescript
+    import {z} from 'zod';
+
+    // Define the schema for the output
+    const CapitalOutput = z.object({
+        capital: z.string().describe('The capital of the country.'),
+    });
+
+    // Create the LlmAgent instance
+    const structuredCapitalAgent = new LlmAgent({
+        // ... name, model, description
+        instruction: `You are a Capital Information Agent. Given a country, respond ONLY with a JSON object containing the capital. Format: {"capital": "capital_name"}`,
+        outputSchema: CapitalOutput, // Enforce JSON output
+        outputKey: 'found_capital', // Store result in state['found_capital']
+        // Cannot use tools effectively here
+    }); 
+    ```
+
 ### Managing Context (`include_contents`)
 
 Control whether the agent receives the prior conversation history.
@@ -332,6 +439,15 @@ Control whether the agent receives the prior conversation history.
             // ... other params
             .includeContents(IncludeContents.NONE)
             .build();
+    ```
+
+=== "Typescript"
+
+    ```typescript
+    const statelessAgent = new LlmAgent({
+        // ... other params
+        includeContents: 'none',
+    }); 
     ```
 
 ### Planner
