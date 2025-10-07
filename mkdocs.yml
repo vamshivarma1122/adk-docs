@@ -27,8 +27,8 @@ extra:
     property: G-DKHZS27PHP
   consent:
     title: Cookie consent
-    description: >- 
-      We use cookies to recognize repeated visits and preferences, 
+    description: >-
+      We use cookies to recognize repeated visits and preferences,
       as well as to measure the effectiveness of our documentation and
       whether users find the information they need. With your consent,
       you're helping us to make our documentation better.
@@ -68,6 +68,7 @@ theme:
     - navigation.instant
     - navigation.instant.progress
     - navigation.path
+    - navigation.sections
     - navigation.top
     - navigation.tracking
     - toc.follow
@@ -113,107 +114,112 @@ plugins:
 
 # Navigation
 nav:
-  - Home: index.md
-  - Get Started:
-    - get-started/index.md
-    - Installation: get-started/installation.md
-    - Quickstart: get-started/quickstart.md
-    - Quickstart (Streaming):
-      - get-started/streaming/index.md
-      - Python: get-started/streaming/quickstart-streaming.md
-      - Java: get-started/streaming/quickstart-streaming-java.md
-    - Testing: get-started/testing.md
-    - Sample agents: https://github.com/google/adk-samples
-    - About ADK: get-started/about.md
-  - Tutorials:
-    - tutorials/index.md
-    - Agent Team: tutorials/agent-team.md
-  - Agents:
-    - agents/index.md
-    - LLM agents: agents/llm-agents.md
-    - Workflow agents:
-      - agents/workflow-agents/index.md
-      - Sequential agents: agents/workflow-agents/sequential-agents.md
-      - Loop agents: agents/workflow-agents/loop-agents.md
-      - Parallel agents: agents/workflow-agents/parallel-agents.md
-    - Custom agents: agents/custom-agents.md
-    - Multi-agent systems: agents/multi-agents.md
-    - Agent Config: agents/config.md
-    - Models & Authentication: agents/models.md
-  - Tools:
-    - tools/index.md
-    - Function tools:
-      - Overview: tools/function-tools.md
-      - Tool performance: tools/performance.md
-      - Action confirmations: tools/confirmation.md
-    - Built-in tools: tools/built-in-tools.md
-    - Third party tools: tools/third-party-tools.md
-    - Google Cloud tools: tools/google-cloud-tools.md
-    - MCP tools: tools/mcp-tools.md
-    - OpenAPI tools: tools/openapi-tools.md
-    - Authentication: tools/authentication.md
-  - Running Agents:
-    - Agent Runtime: runtime/index.md
-    - Runtime Config: runtime/runconfig.md
-  - Deploy:
-    - deploy/index.md
-    - Agent Engine: deploy/agent-engine.md
-    - Cloud Run: deploy/cloud-run.md
-    - GKE: deploy/gke.md
-  - Sessions & Memory:
-    - sessions/index.md
-    - Session: sessions/session.md
-    - State: sessions/state.md
-    - Memory: sessions/memory.md
-    - Vertex AI Express Mode: sessions/express-mode.md
-  - Callbacks:
-    - callbacks/index.md
-    - Types of callbacks: callbacks/types-of-callbacks.md
-    - Callback patterns: callbacks/design-patterns-and-best-practices.md
-  - Artifacts:
-    - artifacts/index.md
-  - Events:
-    - events/index.md
-  - Context:
-    - context/index.md
-  - Observability:
-    - Logging: observability/logging.md
-    - Cloud Trace: observability/cloud-trace.md
-    - AgentOps: observability/agentops.md
-    - Arize AX: observability/arize-ax.md
-    - Phoenix: observability/phoenix.md
-    - W&B Weave: observability/weave.md
-  - Evaluate:
-    - evaluate/index.md
-  - MCP:
-    - mcp/index.md
-  - Plugins:
-    - plugins/index.md
-  - Bidi-streaming (live):
-    - streaming/index.md
-    - Quickstart (Bidi-streaming/live): get-started/streaming/index.md
-    - Custom Audio Bidi-streaming app sample (SSE): streaming/custom-streaming.md
-    - Custom Audio Bidi-streaming app sample (WebSockets): streaming/custom-streaming-ws.md
-    - Bidi-streaming development guide series: streaming/dev-guide/part1.md
-    - Streaming Tools: streaming/streaming-tools.md
-    - Configurating Bidi-streaming behaviour: streaming/configuration.md
-    - Google ADK + Vertex AI Live API (blog post): https://medium.com/google-cloud/google-adk-vertex-ai-live-api-125238982d5e
-  - Grounding:
-    - Understanding Google Search Grounding: grounding/google_search_grounding.md
-    - Understanding Vertex AI Search Grounding: grounding/vertex_ai_search_grounding.md
-  - Safety and Security: safety/index.md
-  - A2A Protocol:
-    - a2a/index.md
-    - Introduction to A2A: a2a/intro.md
-    - A2A Quickstart (Exposing): a2a/quickstart-exposing.md
-    - A2A Quickstart (Consuming): a2a/quickstart-consuming.md
-    - A2A Protocol Documentation: https://a2a-protocol.org
-  - Community Resources: community.md
-  - Contributing Guide: contributing-guide.md
-  - API Reference:
-    - api-reference/index.md
-    - Python ADK: api-reference/python/index.html
-    - Java ADK: api-reference/java/index.html
-    - CLI Reference: api-reference/cli/index.html
-    - Agent Config reference: api-reference/agentconfig/index.html
-    - REST API: api-reference/rest/index.md
+  - Building Agents:
+    - Home:
+      - index.md
+    - Get Started:
+      - get-started/index.md
+      - Installation: get-started/installation.md
+      - Quickstart: get-started/quickstart.md
+      - Quickstart (Streaming):
+        - get-started/streaming/index.md
+        - Python: get-started/streaming/quickstart-streaming.md
+        - Java: get-started/streaming/quickstart-streaming-java.md
+      - Testing: get-started/testing.md
+      - Sample agents: https://github.com/google/adk-samples
+      - About ADK: get-started/about.md
+    - Tutorials:
+      - tutorials/index.md
+      - Agent Team: tutorials/agent-team.md
+    - Agents:
+      - agents/index.md
+      - LLM agents: agents/llm-agents.md
+      - Workflow agents:
+        - agents/workflow-agents/index.md
+        - Sequential agents: agents/workflow-agents/sequential-agents.md
+        - Loop agents: agents/workflow-agents/loop-agents.md
+        - Parallel agents: agents/workflow-agents/parallel-agents.md
+      - Custom agents: agents/custom-agents.md
+      - Multi-agent systems: agents/multi-agents.md
+      - Agent Config: agents/config.md
+      - Models & Authentication: agents/models.md
+    - Tools:
+      - tools/index.md
+      - Function tools:
+        - Overview: tools/function-tools.md
+        - Tool performance: tools/performance.md
+        - Action confirmations: tools/confirmation.md
+      - Built-in tools: tools/built-in-tools.md
+      - Third party tools: tools/third-party-tools.md
+      - Google Cloud tools: tools/google-cloud-tools.md
+      - MCP tools: tools/mcp-tools.md
+      - OpenAPI tools: tools/openapi-tools.md
+      - Authentication: tools/authentication.md
+    - Running Agents:
+      - Agent Runtime: runtime/index.md
+      - Runtime Config: runtime/runconfig.md
+    - Deploy:
+      - deploy/index.md
+      - Agent Engine: deploy/agent-engine.md
+      - Cloud Run: deploy/cloud-run.md
+      - GKE: deploy/gke.md
+  - Components:
+    - Sessions & Memory:
+      - sessions/index.md
+      - Session: sessions/session.md
+      - State: sessions/state.md
+      - Memory: sessions/memory.md
+      - Vertex AI Express Mode: sessions/express-mode.md
+    - Callbacks:
+      - callbacks/index.md
+      - Types of callbacks: callbacks/types-of-callbacks.md
+      - Callback patterns: callbacks/design-patterns-and-best-practices.md
+    - Observability:
+      - Logging: observability/logging.md
+      - Cloud Trace: observability/cloud-trace.md
+      - AgentOps: observability/agentops.md
+      - Arize AX: observability/arize-ax.md
+      - Phoenix: observability/phoenix.md
+      - W&B Weave: observability/weave.md
+    - Artifacts:
+      - artifacts/index.md
+    - Events:
+      - events/index.md
+    - Context:
+      - context/index.md
+    - MCP:
+      - mcp/index.md
+    - Plugins:
+      - plugins/index.md
+    - Bidi-streaming (live):
+      - streaming/index.md
+      - Quickstart (Bidi-streaming/live): get-started/streaming/index.md
+      - Custom Audio Bidi-streaming app sample (SSE): streaming/custom-streaming.md
+      - Custom Audio Bidi-streaming app sample (WebSockets): streaming/custom-streaming-ws.md
+      - Bidi-streaming development guide series: streaming/dev-guide/part1.md
+      - Streaming Tools: streaming/streaming-tools.md
+      - Configurating Bidi-streaming behaviour: streaming/configuration.md
+      - Google ADK + Vertex AI Live API (blog post): https://medium.com/google-cloud/google-adk-vertex-ai-live-api-125238982d5e
+    - Grounding:
+      - Google Search Grounding: grounding/google_search_grounding.md
+      - Vertex AI Search Grounding: grounding/vertex_ai_search_grounding.md
+    - A2A Protocol:
+      - a2a/index.md
+      - Introduction to A2A: a2a/intro.md
+      - A2A Quickstart (Exposing): a2a/quickstart-exposing.md
+      - A2A Quickstart (Consuming): a2a/quickstart-consuming.md
+      - A2A Protocol Documentation: https://a2a-protocol.org
+  - Reference:
+    - API Reference:
+      - api-reference/index.md
+      - Python ADK: api-reference/python/index.html
+      - Java ADK: api-reference/java/index.html
+      - CLI Reference: api-reference/cli/index.html
+      - Agent Config reference: api-reference/agentconfig/index.html
+      - REST API: api-reference/rest/index.md
+    - Safety and Security:
+      - safety/index.md
+    - Evaluation:
+      - evaluate/index.md
+    - Community Resources: community.md
+    - Contributing Guide: contributing-guide.md
