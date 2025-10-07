@@ -191,6 +191,10 @@ nav:
       - mcp/index.md
     - Plugins:
       - plugins/index.md
+    - Safety and Security:
+      - safety/index.md
+    - Evaluation:
+      - evaluate/index.md
     - Bidi-streaming (live):
       - streaming/index.md
       - Quickstart (Bidi-streaming/live): get-started/streaming/index.md
@@ -217,9 +221,5 @@ nav:
       - CLI Reference: api-reference/cli/index.html
       - Agent Config reference: api-reference/agentconfig/index.html
       - REST API: api-reference/rest/index.md
-    - Safety and Security:
-      - safety/index.md
-    - Evaluation:
-      - evaluate/index.md
     - Community Resources: community.md
     - Contributing Guide: contributing-guide.md
