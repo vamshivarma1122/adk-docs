@@ -149,6 +149,7 @@ nav:
     - Models & Authentication: agents/models.md
   - Tools:
     - tools/index.md
+    - External tools: tools/external-tools/index.md
     - Function tools:
       - Overview: tools/function-tools.md
       - Tool performance: tools/performance.md
