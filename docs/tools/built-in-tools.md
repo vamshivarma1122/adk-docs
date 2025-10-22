@@ -141,6 +141,32 @@ The `GkeCodeExecutor` can be configured with the following parameters:
 | `kubeconfig_path`    | `str`  | Path to a kubeconfig file to use for authentication. Falls back to in-cluster config or the default local kubeconfig. |
 | `kubeconfig_context` | `str`  | The `kubeconfig` context to use.  |
 
+### Agent Engine Sandbox Code Executor
+
+The `AgentEngineSandboxCodeExecutor` provides a secure way to execute LLM-generated code within the Agent Engine Code Execution Sandbox. This is particularly useful for data analysis tasks.
+
+#### How to use
+
+1. Follow the instructions at https://cloud.google.com/vertex-ai/generative-ai/docs/agent-engine/code-execution/overview to create a code execution sandbox environment.
+2. Replace `SANDBOX_RESOURCE_NAME` with the one you just created.
+
+**Example:**
+```python
+from google.adk.agents.llm_agent import Agent
+from google.adk.code_executors.agent_engine_sandbox_code_executor import AgentEngineSandboxCodeExecutor
+
+root_agent = Agent(
+    model="gemini-2.0-flash-001",
+    name="agent_engine_code_execution_agent",
+    instruction="<your instruction here>",
+    code_executor=AgentEngineSandboxCodeExecutor(
+        sandbox_resource_name="SANDBOX_RESOURCE_NAME",
+        agent_engine_resource_name="AGENT_ENGINE_RESOURCE_NAME",
+    ),
+)
+```
+For a complete example, see the [agent_engine_code_execution sample](https://github.com/google/adk-python/tree/main/contributing/samples/agent_engine_code_execution).
+
 ### Vertex AI RAG Engine
 
 The `vertex_ai_rag_retrieval` tool allows the agent to perform private data retrieval using Vertex
