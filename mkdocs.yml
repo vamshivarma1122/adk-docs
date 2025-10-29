@@ -165,9 +165,7 @@ nav:
       - tools/third-party/index.md
       - GitHub: tools/third-party/github.md
       - Hugging Face: tools/third-party/hugging-face.md
-      - LangChain tools: tools/third-party/langchain.md
-      - CrewAI tools: tools/third-party/crewai.md
-      - Agentic UI (AG-UI): tools/third-party/ag-ui.md      
+      - Agentic UI (AG-UI): tools/third-party/ag-ui.md
   - Custom Tools:
     - tools-custom/index.md
     - Function tools:
